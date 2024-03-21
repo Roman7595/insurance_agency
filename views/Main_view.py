@@ -1,21 +1,20 @@
 from tkinter import *
 from views import Sql_quary_output_view
+from utils import My_utils as u
 
-def get_answer_to_quary(window):
-    clear_window(window)
-    Sql_quary_output_view.main(window)
+def get_answer_to_quary(window, sql_query):
+    u.clear_window(window)
+    Sql_quary_output_view.main(window, sql_query)
 
-def clear_window(window):
-    for i in window.winfo_children():
-        i.destroy()
+def fill_main_frame(window):
+    create_sql_query(window, 0, 0)
+
 def main():
     window = Tk()
     window.geometry("600x600")
-
     main_frame = Frame(window)
-    main_frame.grid(column=0, row=0)
-
-    create_sql_query(main_frame,0,0)
+    main_frame.pack(padx=20, pady=20)
+    fill_main_frame(main_frame)
 
     window.mainloop()
 
@@ -29,7 +28,7 @@ def create_sql_query(window,col,row):
 
     sql_query = Entry(sql_frame)
     sql_query.grid(column=1,row=0)
-    button = Button(sql_frame, text='Выполнить запрос', command= lambda : get_answer_to_quary(window) )
+    button = Button(sql_frame, text='Выполнить запрос', command= lambda : get_answer_to_quary(window, sql_query.get()) )
     button.grid(column=2,row=0, padx=20)
 
 
