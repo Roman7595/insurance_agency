@@ -10,7 +10,7 @@ def main(window, type,sql_query_info):
     if type == 0:
         label = Label(window, text= f'Результаты по запросу "{sql_query_info[0]}":')
     else:
-        label = Label(window, text=f'Результаты по запросу №{type}:')
+        label = Label(window, text=f'Результаты по запросу №{type}:, {sql_query_info}')
     label.pack(side='top')
 
     table_frame = Frame(window)
