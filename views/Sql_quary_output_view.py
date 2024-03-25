@@ -6,9 +6,11 @@ def back_to_main_menu(window):
     u.clear_window(window)
     Main_view.fill_main_frame(window)
 
-def main(window, sql_query):
-
-    label = Label(window, text= f'Результаты по запросу "{sql_query}":')
+def main(window, type,sql_query_info):
+    if type == 0:
+        label = Label(window, text= f'Результаты по запросу "{sql_query_info[0]}":')
+    else:
+        label = Label(window, text=f'Результаты по запросу №{type}:')
     label.pack(side='top')
 
     table_frame = Frame(window)
@@ -24,7 +26,23 @@ def main(window, sql_query):
 
     table.configure(xscrollcommand= vert_bar.set)
 
-    # TODO: backend function to get table
+
+    if type == 0:# TODO: backend function to get table
+        pass
+    elif type == 1:
+        pass
+    elif type == 1:
+        pass
+    elif type == 1:
+        pass
+    elif type == 1:
+        pass
+    elif type == 1:
+        pass
+    elif type == 1:
+        pass
+    else:
+        pass #error
     table['columns'] = ('1','2','3')
     table['show'] = 'headings'
     table.column('1', width=90, anchor='c')
@@ -33,7 +51,6 @@ def main(window, sql_query):
     table.heading('1', text='rgd')
     table.heading('2', text='sggbs')
     table.heading('3', text='sdbdb')
-
     for i in range(15):
         table.insert('', 'end', text='L1', values=(f'{i}',f'{i+1}',f'{i-1}'))
 
