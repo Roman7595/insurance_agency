@@ -30,6 +30,7 @@ def create_sql_query(window):
 
     sql_query = Entry(sql_frame)
     sql_query.grid(column=1,row=0)
+
     button = Button(sql_frame, text='Выполнить запрос', command= lambda : get_answer_to_quary(window, quary_enum.quary_enum['raw'], [sql_query.get()]) )
     button.grid(column=2,row=0, padx=20)
 
@@ -42,7 +43,20 @@ def all_contr_by_clients_query(window):
 
     sql_query = Entry(sql_frame)
     sql_query.grid(column=1,row=0)
+
     button = Button(sql_frame, text='Выполнить', command= lambda : get_answer_to_quary(window, quary_enum.quary_enum['contr_by_client'], [sql_query.get()]) )
     button.grid(column=2,row=0, padx=20)
 
+def all_contr_by_clients_query(window):
+    sql_frame = LabelFrame(window, text='Получить все автомобили конкретного клиента')
+    sql_frame.pack(fill='both')
+
+    sql_label = Label(sql_frame, text='Введите id клиента: ')
+    sql_label.grid(padx=20, pady=20)
+
+    sql_query = Entry(sql_frame)
+    sql_query.grid(column=1,row=0)
+
+    button = Button(sql_frame, text='Выполнить', command= lambda : get_answer_to_quary(window, quary_enum.quary_enum['auto_by_client'], [sql_query.get()]) )
+    button.grid(column=2,row=0, padx=20)
 
