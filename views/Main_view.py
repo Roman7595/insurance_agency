@@ -9,6 +9,16 @@ def get_answer_to_quary(window, quary_type, sql_query_info):
     u.clear_window(window)
     Sql_quary_output_view.main(window, quary_type, sql_query_info)
 
+def verify_date(date, next):
+    for i in date:
+        if not(u.is_date(i)):
+            messagebox.showerror('Error', 'Не правильно указано дата')
+            return
+    if date[0]>date[1]:
+        messagebox.showerror('Error', 'Дата окончания должна быть больше чем дата начала')
+        return
+    next()
+
 def fill_main_frame(window):
     create_sql_query(window)
     all_contr_by_clients_query(window)
@@ -100,12 +110,4 @@ def all_contr_by_time_query(window):
                                                                                [start_time.get(), expiration_time.get()])))
     button.grid(column=3,row=2, padx=10, pady=20)
 
-def verify_date(date, next):
-    for i in date:
-        if not(u.is_date(i)):
-            messagebox.showerror('Error', 'Не правильно указано дата')
-            return
-    if date[0]>date[1]:
-        messagebox.showerror('Error', 'Дата окончания должна быть больше чем дата начала')
-        return
-    next()
+
