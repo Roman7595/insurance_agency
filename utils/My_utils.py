@@ -13,8 +13,9 @@ quary_enum = {'raw': 0,
               'update_reason': 6,
               'add_contract': 7,
               'delete_contract': 8,
-              'count_contract': 9,
-
+              'count_contract_user': 9,
+              'count_contract_payment': 10,
+              'multi_reasons': 11,
               }
 
 def verify_positive(nums, next):

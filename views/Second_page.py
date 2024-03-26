@@ -122,7 +122,7 @@ def count_contract_by_users_quary(window):
     sql_frame.pack(fill = 'both')
 
     button = Button(sql_frame, text='Выполнить',
-                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract'],
+                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract_user'],
                                                                   []))
     button.grid(column=2, row=0, padx=20, pady=20)
 
@@ -131,7 +131,7 @@ def count_contract_where_payments_quary(window):
     sql_frame.pack(fill = 'both')
 
     button = Button(sql_frame, text='Выполнить',
-                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract'],
+                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract_payment'],
                                                                   []))
     button.grid(column=2, row=0, padx=20, pady=20)
 

@@ -40,7 +40,7 @@ def all_contracts_where_reason_quary(window):
 
 
     button = Button(sql_frame, text='Выполнить',
-                    command= lambda: M.get_answer_to_quary(window, u.quary_enum['count_contract'],
+                    command= lambda: M.get_answer_to_quary(window, u.quary_enum['multi_reasons'],
                                                   [i.get() for i in REASONS]))
     button.grid(column=2, row=2, padx=20, pady=20)
 
