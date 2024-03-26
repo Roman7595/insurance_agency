@@ -1,4 +1,5 @@
 import datetime
+from tkinter import messagebox
 def clear_window(window):
     for i in window.winfo_children():
         i.destroy()
@@ -7,10 +8,34 @@ quary_enum = {'raw': 0,
               'contr_by_client': 1,
               'auto_by_client': 2,
               'contr_by_fed': 3,
-              'contr_by_time':4,
-              'reasons_by_contr':5,
+              'contr_by_time': 4,
+              'reasons_by_contr': 5,
+              'update_reason': 6,
+              'add_contract': 7,
+              'delete_contract': 8,
+              'count_contract': 9,
 
               }
+
+def verify_positive(nums, next):
+    for i in nums:
+        if i < 0:
+            messagebox.showerror('Error', 'Страховая премия или лимит ответственности отрицательные')
+            return
+    if nums[0]>nums[1]:
+        messagebox.showerror('Error', 'Страховая премия должна быть меньше чем лимит ответственности')
+        return
+    next()
+
+def verify_date(date, next):
+    for i in date:
+        if not(is_date(i)):
+            messagebox.showerror('Error', 'Не правильно указано дата')
+            return
+    if date[0]>date[1]:
+        messagebox.showerror('Error', 'Дата окончания должна быть больше чем дата начала')
+        return
+    next()
 
 def is_date(date):
     try:
@@ -18,3 +43,13 @@ def is_date(date):
         return True
     except (ValueError):
         return False
+
+def null_check(data, next):
+    for i in data:
+        if not(i):
+            messagebox.showerror('Error', 'Не все значения заполнены')
+            return
+    next()
+
+
+list_of_autos = {'':0,'Роман':1, 'vddfsdfd':3, 'sdgsdfbdfd':5, 'dвтмыл':1000}  #TODO: get all numbers and convert to id
