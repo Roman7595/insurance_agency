@@ -23,3 +23,8 @@ def get_all_payments():
 def get_all_autos():
     return dict(s.query(Models.Auto.number, Models.Auto.id).order_by(Models.Auto.number)) # payment number
 
+def get_contracts_by_client(client_id):
+    return s.query(Models.Contract).join(Models.Auto).filter(Models.Auto.client_id == int(client_id))
+
+def get_contracts_colums():
+    return Models.Contract.__table__.columns.keys()

@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter import ttk
-from tkinter import messagebox
 
 import backend.Repositories
 from views import Sql_quary_output_view

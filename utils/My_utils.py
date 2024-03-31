@@ -1,11 +1,12 @@
 import datetime
 from tkinter import messagebox
+from backend import Services
 def clear_window(window):
     for i in window.winfo_children():
         i.destroy()
 
-quary_enum = {'raw': 0,
-              'contr_by_client': 1,
+quary_enum = {'raw': (0,lambda x: Services.raw_sql(x)),
+              'contr_by_client': (1,lambda x: Services.get_contracts_by_client(x)),
               'auto_by_client': 2,
               'contr_by_fed': 3,
               'contr_by_time': 4,
