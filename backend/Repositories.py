@@ -8,6 +8,13 @@ engine = create_engine(connection.conn, echo=True)
 
 session = sessionmaker(bind=engine)
 s = session()
+
+
+def commit():
+    s.commit()
+    return True
+def get_all_reasons():
+    return dict(s.query(Models.Reason.name, Models.Reason.id).order_by(Models.Reason.id))
 def get_all_clients_name():
     return dict(s.query(Models.Client.name, Models.Client.id).order_by(Models.Client.id))
 
@@ -48,3 +55,12 @@ def get_reasons_columns():
 
 def get_reasons_by_contract(contract_id):
     return s.query(Models.Reason.id,Models.Reason.name,Models.Reason.risk_factor).join(Models.Payment).join(Models.Contract).filter(Models.Contract.id == int(contract_id))
+
+def update_reason_of_payment():
+    pass
+
+def count_contracts_by_client():
+    return s.query(Models)
+
+def get_payment_by_id(payment_id):
+    return s.query(Models.Payment).filter(Models.Payment.id == int(payment_id)).one()
