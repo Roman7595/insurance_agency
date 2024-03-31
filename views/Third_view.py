@@ -4,6 +4,7 @@ from tkinter import *
 from utils import My_utils as u
 from views import Second_page as s
 from views import Main_view as M
+from backend import Repositories
 
 REASONS =[]
 
@@ -12,7 +13,8 @@ def back(window):
     s.fill_second_frame(window)
 
 def fill_third_frame(window):
-    all_contracts_where_reason_quary(window)
+    payment_dict = Repositories.get_all_payments()
+    all_contracts_where_reason_quary(window, payment_dict)
 
     button_frame = Frame(window)
     button_frame.pack(fill='both', pady=20)
@@ -21,7 +23,7 @@ def fill_third_frame(window):
     button.pack(anchor='sw', padx=20)
 
 
-def all_contracts_where_reason_quary(window):
+def all_contracts_where_reason_quary(window, payment_dict):
     sql_frame = LabelFrame(window, text='Договоры, по которым были сделаны данные выплаты')
     sql_frame.pack(fill='both')
 
@@ -32,22 +34,22 @@ def all_contracts_where_reason_quary(window):
     count_reasons.grid(padx=10, column=1, row=0)
 
     reason_frame = Frame(sql_frame)
-    reason_frame.grid(column=0,row=1,columnspan=2)
+    reason_frame.grid(column=0, row=1, columnspan=2)
 
     button = Button(sql_frame, text='Ввести',
-                    command=lambda: place_reasons(int(count_reasons.get()), reason_frame))
+                    command=lambda: place_reasons(int(count_reasons.get()), reason_frame, payment_dict))
     button.grid(column=2, row=0, padx=20, pady=20)
 
 
     button = Button(sql_frame, text='Выполнить',
                     command= lambda: M.get_answer_to_quary(window, u.quary_enum['multi_reasons'],
-                                                  [i.get() for i in REASONS]))
+                                                  [payment_dict[int(i.get())] for i in REASONS]))
     button.grid(column=2, row=2, padx=20, pady=20)
 
 
-def place_reasons(n, window):
+def place_reasons(n, window, payment_dict):
     u.clear_window(window)
-    reason_count = 5 #TODO: get all reasons count
+    reason_count = len(payment_dict)
 
     if n<=0 or n>reason_count:
         messagebox.showerror('Error', f'Количество причин должно быть натуральным числом не более чем {reason_count}')
@@ -60,5 +62,5 @@ def place_reasons(n, window):
 
         REASONS.append(ttk.Combobox(window, state="readonly"))
 
-        REASONS[-1]['values'] = [['Роман', 'vddfsdfd', 'sdgsdfbdfd'], 'dвтмыл']  # TODO: get payments with contr num
+        REASONS[-1]['values'] = list(payment_dict.keys())
         REASONS[-1].grid(column=1, row=i)

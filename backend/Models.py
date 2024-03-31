@@ -3,7 +3,9 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
-engine = create_engine('postgresql+psycopg2://postgres:1111@localhost/insurance_agency',echo=True)
+from backend import connection
+
+engine = create_engine(connection.conn,echo=True)
 
 Base = declarative_base()
 

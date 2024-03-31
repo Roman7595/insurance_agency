@@ -3,7 +3,7 @@ from tkinter import ttk
 from utils import My_utils as u
 from views import Main_view
 from views import Third_view as T
-
+from backend import Repositories
 def back_to_main_menu(window):
     u.clear_window(window)
     Main_view.fill_main_frame(window)
@@ -12,9 +12,13 @@ def next_view(window):
     T.fill_third_frame(window)
 
 def fill_second_frame(window):
-    update_reason_of_payment_query(window)
-    add_contract_query(window)
-    delete_contract_query(window)
+    payment_dict = Repositories.get_all_payments()
+    update_reason_of_payment_query(window,payment_dict)
+    auto_dict = Repositories.get_all_autos()
+    region_dict = Repositories.get_all_regions_name()
+    add_contract_query(window,auto_dict,region_dict)
+    contract_dict = Repositories.get_all_contract()
+    delete_contract_query(window, contract_dict)
     count_contract_by_users_quary(window)
     count_contract_where_payments_quary(window)
 
@@ -31,23 +35,22 @@ def fill_second_frame(window):
                     command=lambda: next_view(window))
     button.grid(row=0,column=1, padx=100)
 
-def update_reason_of_payment_query(window):
+def update_reason_of_payment_query(window, payment_dict):
     sql_frame = LabelFrame(window, text='Изменить причину выплаты ')
     sql_frame.pack(fill='both')
 
     sql_label = Label(sql_frame, text='Введите выплату: ')
     sql_label.grid(padx=20, pady=20)
 
-    client_name = ttk.Combobox(sql_frame,state="readonly")
-    client_name['values'] = [['Роман','vddfsdfd','sdgsdfbdfd'], 'dвтмыл']  # TODO: get payments with contr num
-    client_name.grid(column=1, row=0)
+    payment_name = ttk.Combobox(sql_frame,state="readonly")
+    payment_name['values'] = list(payment_dict.keys())
+    payment_name.grid(column=1, row=0)
 
     button = Button(sql_frame, text='Выполнить',
-                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['update_reason'], [client_name.get()]))
+                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['update_reason'], [payment_dict[int(payment_name.get())]]))
     button.grid(column=2, row=0, padx=20)
 
-def add_contract_query(window):
-
+def add_contract_query(window,auto_dict,region_dict):
 
     sql_frame = LabelFrame(window, text='Добавить новый договор')
     sql_frame.pack(fill='both')
@@ -55,13 +58,13 @@ def add_contract_query(window):
     sql_label = Label(sql_frame, text='Выберете автомобиль по номеру: ')
     sql_label.grid(padx=20, pady=10)
     auto_name = ttk.Combobox(sql_frame,state="readonly")
-    auto_name['values'] = list(u.list_of_autos.keys())
+    auto_name['values'] = list(auto_dict.keys())
     auto_name.grid(column=1, row=0)
 
     sql_label = Label(sql_frame, text='Выберете регион по названию: ')
     sql_label.grid(padx=20, pady=10)
     region_name = ttk.Combobox(sql_frame,state="readonly")
-    region_name['values'] = 'Роман', 'vddfsdfd', 'sdgsdfbdfd', 'dвтмыл'  # TODO: get payments with contr num
+    region_name['values'] = list(region_dict.keys())
     region_name.grid(column=1, row=1)
 
     sql_label = Label(sql_frame, text='Введите дату начала временного периода \n(в формате ГГГГ-ММ-ДД): ')
@@ -94,15 +97,15 @@ def add_contract_query(window):
                     lambda: u.verify_positive([int(insurance_premium.get()), int(liability_limit.get())],
                     lambda: u.verify_date([start_time.get(), expiration_time.get()],
                                                   lambda: Main_view.get_answer_to_quary(window, u.quary_enum['add_contract'],
-                                                                                        [auto_name.get(),
-                                                                                         region_name.get(),
+                                                                                        [auto_dict[auto_name.get()],
+                                                                                         region_dict[region_name.get()],
                                                                                          start_time.get(),
                                                                                          expiration_time.get(),
                                                                                          insurance_premium.get(),
                                                                                          liability_limit.get()])))))
     button.grid(column=2, row=5, padx=20, pady=20)
 
-def delete_contract_query(window):
+def delete_contract_query(window, contract_dict):
     sql_frame = LabelFrame(window, text='Удалить договор ')
     sql_frame.pack(fill='both')
 
@@ -110,11 +113,11 @@ def delete_contract_query(window):
     sql_label.grid(padx=20, pady=20)
 
     contract_number = ttk.Combobox(sql_frame,state="readonly")
-    contract_number['values'] = [['Роман', 'vddfsdfd', 'sdgsdfbdfd'], 'dвтмыл']  # TODO: get payments with contr num
+    contract_number['values'] = list(contract_dict.keys())
     contract_number.grid(column=1, row=0)
 
     button = Button(sql_frame, text='Выполнить',
-                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['delete_contract'], [contract_number.get()]))
+                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['delete_contract'], [contract_dict[int(contract_number.get())]]))
     button.grid(column=2, row=0, padx=20)
 
 def count_contract_by_users_quary(window):
@@ -124,7 +127,7 @@ def count_contract_by_users_quary(window):
     button = Button(sql_frame, text='Выполнить',
                     command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract_user'],
                                                                   []))
-    button.grid(column=2, row=0, padx=20, pady=20)
+    button.grid(column=2, row=0, padx=20, pady=10)
 
 def count_contract_where_payments_quary(window):
     sql_frame = LabelFrame(window, text='Договоры где есть выплата')
@@ -133,5 +136,5 @@ def count_contract_where_payments_quary(window):
     button = Button(sql_frame, text='Выполнить',
                     command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract_payment'],
                                                                   []))
-    button.grid(column=2, row=0, padx=20, pady=20)
+    button.grid(column=2, row=0, padx=20, pady=10)
 
