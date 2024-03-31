@@ -22,8 +22,8 @@ def fill_main_frame(window):
     all_contr_by_clients_query(window, client_name_dict)
     all_auto_by_clients_query(window, client_name_dict)
 
-    region_name_dict = backend.Repositories.get_all_regions_name()
-    all_contr_by_fed_region_query(window, region_name_dict)
+    federal_region_name_dict = backend.Repositories.get_all_federal_regions_name()
+    all_contr_by_fed_region_query(window, federal_region_name_dict)
     all_contr_by_time_query(window)
 
     contract_dict = backend.Repositories.get_all_contract()
