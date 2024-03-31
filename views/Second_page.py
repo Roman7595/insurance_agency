@@ -48,12 +48,12 @@ def update_reason_of_payment_query(window, payment_dict, reason_dict):
 
     sql_label = Label(sql_frame, text='Выберете новую причину выплаты: ')
     sql_label.grid(padx=20, pady=10, row=1)
-    payment_name = ttk.Combobox(sql_frame, state="readonly")
-    payment_name['values'] = list(reason_dict.keys())
-    payment_name.grid(column=1, row=1)
+    reason_name = ttk.Combobox(sql_frame, state="readonly")
+    reason_name['values'] = list(reason_dict.keys())
+    reason_name.grid(column=1, row=1)
 
     button = Button(sql_frame, text='Выполнить',
-                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['update_reason'], [payment_dict[int(payment_name.get())]]))
+                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['update_reason'], [payment_dict[int(payment_name.get())], reason_dict[reason_name.get()]]))
     button.grid(column=2, row=2, padx=20, pady=10)
 
 def add_contract_query(window,auto_dict,region_dict):
