@@ -13,7 +13,7 @@ class Federal_region(Base):
     __tablename__ = 'Federal_regions'
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
-    region = relationship('Region')
+    #region = relationship('Region')
     def __iter__(self):
         return [self.id, self.name].__iter__()
 
@@ -26,8 +26,8 @@ class Region(Base):
     name = Column(String(250), nullable=False)
     risk_factor = Column(Double, nullable=False)
     OKATO_region_code = Column(Integer,nullable=False)
-    federal_region = relationship('Federal_region')
-    contract = relationship('Contract')
+    #federal_region = relationship('Federal_region')
+    #contract = relationship('Contract')
     def __iter__(self):
         return [self.id,self.federal_region_id,self.name, self.risk_factor,self.OKATO_region_code].__iter__()
 
@@ -38,7 +38,7 @@ class Auto_type(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     risk_factor = Column(Double, nullable=False)
-    auto = relationship('Auto')
+    #auto = relationship('Auto')
     def __iter__(self):
         return [self.id, self.name, self.risk_factor, self.auto].__iter__()
 
@@ -54,7 +54,7 @@ class Client(Base):
     phone_number = Column(String(250), nullable=True)
     email = Column(String(250), nullable=True)
     passport_series = Column(Integer, nullable=False)
-    auto_type = relationship('Auto')
+    #auto_type = relationship('Auto')
     def __iter__(self):
         return [self.id, self.name, self.surname, self.last_name, self.passport_number, self.phone_number,
                 self.email, self.passport_series].__iter__()
@@ -70,9 +70,9 @@ class Auto(Base):
     brand = Column(String(250), nullable=False)
     model = Column(String(250), nullable=False)
     VIN = Column(String(250), nullable=False)
-    auto_type = relationship('Auto_type')
-    client = relationship('Client')
-    contract = relationship('Contract')
+    #auto_type = relationship('Auto_type')
+    #client = relationship('Client')
+    #contract = relationship('Contract')
     def __iter__(self):
         return [self.id, self.auto_type_id, self.client_id, self.number, self.brand, self.model,
                 self.VIN].__iter__()
@@ -88,9 +88,9 @@ class Contract(Base):
     expiration_date = Column(Date, nullable=False)
     insurance_premium = Column(Double, nullable=False)
     liability_limit = Column(Double, nullable=False)
-    auto = relationship('Auto')
-    region = relationship('Region')
-    reason = relationship('Payment')
+    #auto = relationship('Auto')
+    #region = relationship('Region')
+    #reason = relationship('Payment')
     def __iter__(self):
         return [self.id,self.auto_id,self.region_id, self.start_date,self.expiration_date,self.insurance_premium,self.liability_limit].__iter__()
 
@@ -100,7 +100,7 @@ class Reason(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     risk_factor = Column(Double, nullable=False)
-    payment = relationship('Payment')
+    #payment = relationship('Payment')
     def __iter__(self):
         return [self.id, self.name, self.risk_factor].__iter__()
 
@@ -113,8 +113,8 @@ class Payment(Base):
     contract_id = Column(Integer, ForeignKey("Contracts.id"))
     date = Column(Date, nullable=False)
     payment_sum = Column(Double, nullable=False)
-    reason = relationship('Reason')
-    contract = relationship('Contract')
+    #reason = relationship('Reason')
+    #contract = relationship('Contract')
     def __iter__(self):
         return [self.id, self.reason_id, self.contract_id, self.date, self.payment_sum, self.reason_id].__iter__()
 
