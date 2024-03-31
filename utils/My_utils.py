@@ -31,7 +31,7 @@ def verify_positive(nums, next):
 def verify_date(date, next):
     for i in date:
         if not(is_date(i)):
-            messagebox.showerror('Error', 'Не правильно указано дата')
+            messagebox.showerror('Error', 'Не правильно указана дата')
             return
     if date[0]>date[1]:
         messagebox.showerror('Error', 'Дата окончания должна быть больше чем дата начала')
