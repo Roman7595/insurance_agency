@@ -13,7 +13,8 @@ def next_view(window):
 
 def fill_second_frame(window):
     payment_dict = Repositories.get_all_payments()
-    update_reason_of_payment_query(window,payment_dict)
+    reason_dict = Repositories.get_all_reasons()
+    update_reason_of_payment_query(window,payment_dict,reason_dict)
     auto_dict = Repositories.get_all_autos()
     region_dict = Repositories.get_all_regions_name()
     add_contract_query(window,auto_dict,region_dict)
@@ -35,20 +36,25 @@ def fill_second_frame(window):
                     command=lambda: next_view(window))
     button.grid(row=0,column=1, padx=100)
 
-def update_reason_of_payment_query(window, payment_dict):
+def update_reason_of_payment_query(window, payment_dict, reason_dict):
     sql_frame = LabelFrame(window, text='Изменить причину выплаты ')
     sql_frame.pack(fill='both')
 
     sql_label = Label(sql_frame, text='Введите выплату: ')
-    sql_label.grid(padx=20, pady=20)
-
+    sql_label.grid(padx=20, pady=10)
     payment_name = ttk.Combobox(sql_frame,state="readonly")
     payment_name['values'] = list(payment_dict.keys())
     payment_name.grid(column=1, row=0)
 
+    sql_label = Label(sql_frame, text='Выберете новую причину выплаты: ')
+    sql_label.grid(padx=20, pady=10, row=1)
+    payment_name = ttk.Combobox(sql_frame, state="readonly")
+    payment_name['values'] = list(reason_dict.keys())
+    payment_name.grid(column=1, row=1)
+
     button = Button(sql_frame, text='Выполнить',
                     command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['update_reason'], [payment_dict[int(payment_name.get())]]))
-    button.grid(column=2, row=0, padx=20)
+    button.grid(column=2, row=2, padx=20, pady=10)
 
 def add_contract_query(window,auto_dict,region_dict):
 
@@ -56,34 +62,34 @@ def add_contract_query(window,auto_dict,region_dict):
     sql_frame.pack(fill='both')
 
     sql_label = Label(sql_frame, text='Выберете автомобиль по номеру: ')
-    sql_label.grid(padx=20, pady=10)
+    sql_label.grid(padx=20, pady=5)
     auto_name = ttk.Combobox(sql_frame,state="readonly")
     auto_name['values'] = list(auto_dict.keys())
     auto_name.grid(column=1, row=0)
 
     sql_label = Label(sql_frame, text='Выберете регион по названию: ')
-    sql_label.grid(padx=20, pady=10)
+    sql_label.grid(padx=20, pady=5)
     region_name = ttk.Combobox(sql_frame,state="readonly")
     region_name['values'] = list(region_dict.keys())
     region_name.grid(column=1, row=1)
 
     sql_label = Label(sql_frame, text='Введите дату начала временного периода \n(в формате ГГГГ-ММ-ДД): ')
-    sql_label.grid(padx=10, pady=10, column=0, row=2)
+    sql_label.grid(padx=10, pady=5, column=0, row=2)
     start_time = Entry(sql_frame)
     start_time.grid(padx=10, column=1, row=2)
 
     sql_label = Label(sql_frame, text='Введите дату окончания временного периода \n(в формате ГГГГ-ММ-ДД): ')
-    sql_label.grid(padx=10, pady=10, column=0, row=3)
+    sql_label.grid(padx=10, pady=5, column=0, row=3)
     expiration_time = Entry(sql_frame)
     expiration_time.grid(padx=10, column=1, row=3)
 
     sql_label = Label(sql_frame, text='Введите страховую премию: ')
-    sql_label.grid(padx=10, pady=10, column=0, row=4)
+    sql_label.grid(padx=10, pady=5, column=0, row=4)
     insurance_premium = Entry(sql_frame)
     insurance_premium.grid(padx=10, column=1, row=4)
 
     sql_label = Label(sql_frame, text='Введите лимит ответственности: ')
-    sql_label.grid(padx=10, pady=10, column=0, row=5)
+    sql_label.grid(padx=10, pady=5, column=0, row=5)
     liability_limit = Entry(sql_frame)
     liability_limit.grid(padx=10, column=1, row=5)
 
@@ -103,14 +109,14 @@ def add_contract_query(window,auto_dict,region_dict):
                                                                                          expiration_time.get(),
                                                                                          insurance_premium.get(),
                                                                                          liability_limit.get()])))))
-    button.grid(column=2, row=5, padx=20, pady=20)
+    button.grid(column=2, row=5, padx=20, pady=10)
 
 def delete_contract_query(window, contract_dict):
     sql_frame = LabelFrame(window, text='Удалить договор ')
     sql_frame.pack(fill='both')
 
     sql_label = Label(sql_frame, text='Выберете номер договора: ')
-    sql_label.grid(padx=20, pady=20)
+    sql_label.grid(padx=20, pady=10)
 
     contract_number = ttk.Combobox(sql_frame,state="readonly")
     contract_number['values'] = list(contract_dict.keys())
