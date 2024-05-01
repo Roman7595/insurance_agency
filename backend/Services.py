@@ -61,19 +61,6 @@ def get_reasons_by_contract(contract_id):
     else:
         return
 
-def update_reason_of_payment(data):
-    (payment_id, reason_id) = data
-    payment = R.get_payment_by_id(payment_id)
-    # old_reason_id = payment.reason_id
-
-    reasons_dict = R.get_all_reasons()
-    new_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(reason_id))]
-    # old_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(old_reason_id))]
-    # print(old_reason_id, old_reason_name, new_reason_name)
-    payment.reason_id = reason_id
-
-    if(R.commit()):
-        # print(old_reason_id, old_reason_name, new_reason_name)
-        return (payment.id ,new_reason_name)
-    else:
-        return
+def update_reason_of_payment(data):#return to repo input:id,id output: New_name
+    (payment_id, new_reason_id) = data
+    return R.update_reason_of_payment(payment_id, new_reason_id)
