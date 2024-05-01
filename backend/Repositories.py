@@ -10,13 +10,14 @@ session = sessionmaker(bind=engine)
 s = session()
 
 
-def commit():
-    s.commit()
-    return True
+
 def get_all_reasons():
     return dict(s.query(Models.Reason.name, Models.Reason.id).order_by(Models.Reason.id))
 def get_all_clients_name():
-    return dict(s.query(Models.Client.name, Models.Client.id).order_by(Models.Client.id))
+    return dict(map(
+        lambda x: (f'{x[0]} {x[1]}' + (f' {x[2]}' if x[2] else ''), x[3]),
+        s.query(Models.Client.name, Models.Client.surname, Models.Client.last_name, Models.Client.id)
+        .order_by(Models.Client.id)))
 
 def get_all_regions_name():
     return dict(s.query(Models.Region.name, Models.Region.id).order_by(Models.Region.id))
@@ -56,11 +57,22 @@ def get_reasons_columns():
 def get_reasons_by_contract(contract_id):
     return s.query(Models.Reason.id,Models.Reason.name,Models.Reason.risk_factor).join(Models.Payment).join(Models.Contract).filter(Models.Contract.id == int(contract_id))
 
-def update_reason_of_payment():
-    pass
-
 def count_contracts_by_client():
     return s.query(Models)
 
 def get_payment_by_id(payment_id):
     return s.query(Models.Payment).filter(Models.Payment.id == int(payment_id)).one()
+
+def update_reason_of_payment(payment_id, new_reason_id):
+    payment = get_payment_by_id(payment_id)
+    # old_reason_id = payment.reason_id
+
+    reasons_dict = get_all_reasons()
+    new_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(new_reason_id))]
+    # old_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(old_reason_id))]
+    # print(old_reason_id, old_reason_name, new_reason_name)
+    payment.reason_id = new_reason_id
+    s.commit()
+    return (payment.id, new_reason_name)
+def add_contract(auto_id, region_id, start_date, epiration_date, insurance_premium, liability_limit):
+    pass
