@@ -12,56 +12,62 @@ s = session()
 
 
 def get_all_reasons():
-    return dict(s.query(Models.Reason.name, Models.Reason.id).order_by(Models.Reason.id))
+    return dict(s.query(Models.Reasons.name, Models.Reasons.id).order_by(Models.Reasons.id))
 def get_all_clients_name():
     return dict(map(
         lambda x: (f'{x[0]} {x[1]}' + (f' {x[2]}' if x[2] else ''), x[3]),
-        s.query(Models.Client.name, Models.Client.surname, Models.Client.last_name, Models.Client.id)
-        .order_by(Models.Client.id)))
+        s.query(Models.Clients.name, Models.Clients.surname, Models.Clients.last_name, Models.Clients.id)
+        .order_by(Models.Clients.id)))
 
 def get_all_regions_name():
-    return dict(s.query(Models.Region.name, Models.Region.id).order_by(Models.Region.id))
+    return dict(s.query(Models.Regions.name, Models.Regions.id)
+                .order_by(Models.Regions.id))
 
 def get_all_federal_regions_name():
-    return dict(s.query(Models.Federal_region.name, Models.Federal_region.id).order_by(Models.Federal_region.id))
+    return dict(s.query(Models.Federal_regions.name, Models.Federal_regions.id)
+                .order_by(Models.Federal_regions.id))
 
 def get_all_contract():
-    return dict(s.query(Models.Contract.id, Models.Contract.id).order_by(Models.Contract.id)) # contr number
+    return dict(s.query(Models.Contracts.id, Models.Contracts.id)
+                .order_by(Models.Contracts.id)) # contr number
 
 def get_all_payments():
-    return dict(s.query(Models.Payment.id, Models.Payment.id).order_by(Models.Payment.id)) # payment number
+    return dict(s.query(Models.Payments.id, Models.Payments.id)
+                .order_by(Models.Payments.id)) # payment number
 
 def get_all_autos():
-    return dict(s.query(Models.Auto.number, Models.Auto.id).order_by(Models.Auto.number)) # payment number
+    return dict(s.query(Models.Autos.number, Models.Autos.id)
+                .order_by(Models.Autos.number)) # payment number
 
 def get_contracts_by_client(client_id):
-    return s.query(Models.Contract).join(Models.Auto).filter(Models.Auto.client_id == int(client_id))
+    return s.query(Models.Contracts).join(Models.Autos)\
+        .filter(Models.Autos.client_id == int(client_id))
 def get_contracts_columns():
-    return Models.Contract.__table__.columns.keys()
+    return Models.Contracts.__table__.columns.keys()
 
 
 def get_autos_by_client(client_id):
-    return s.query(Models.Auto).join(Models.Client).filter(Models.Auto.client_id == int(client_id))
+    return s.query(Models.Autos).join(Models.Clients).filter(Models.Autos.client_id == int(client_id))
 def get_autos_columns():
-    return Models.Auto.__table__.columns.keys()
+    return Models.Autos.__table__.columns.keys()
 
 def get_contracts_by_federal_region(federal_region_id):
-    return s.query(Models.Contract).join(Models.Region).filter(Models.Region.federal_region_id == int(federal_region_id))
+    return s.query(Models.Contracts).join(Models.Regions).filter(Models.Regions.federal_region_id == int(federal_region_id))
 
-def get_contracts_by_time(start,end):
-    return  s.query(Models.Contract).filter(Models.Contract.start_date < end).filter(Models.Contract.expiration_date > start).order_by(Models.Contract.id)
+def get_contracts_by_time(start, end):
+    return  s.query(Models.Contracts).filter(Models.Contracts.start_date < end).filter(Models.Contracts.expiration_date > start).order_by(Models.Contracts.id)
 
 def get_reasons_columns():
-    return Models.Reason.__table__.columns.keys()
+    return Models.Reasons.__table__.columns.keys()
 
 def get_reasons_by_contract(contract_id):
-    return s.query(Models.Reason.id,Models.Reason.name,Models.Reason.risk_factor).join(Models.Payment).join(Models.Contract).filter(Models.Contract.id == int(contract_id))
+    return s.query(Models.Reasons.id,Models.Reasons.name,Models.Reasons.risk_factor).join(Models.Payments).join(Models.Contracts).filter(Models.Contracts.id == int(contract_id))
 
 def count_contracts_by_client():
     return s.query(Models)
 
 def get_payment_by_id(payment_id):
-    return s.query(Models.Payment).filter(Models.Payment.id == int(payment_id)).one()
+    return s.query(Models.Payments).filter(Models.Payments.id == int(payment_id)).one()
 
 def update_reason_of_payment(payment_id, new_reason_id):
     payment = get_payment_by_id(payment_id)
