@@ -37,7 +37,7 @@ def fill_main_frame(window):
     button.pack(anchor='se', padx=20)
 def main():
     window = Tk()
-    window.geometry("600x750")
+    window.geometry("750x750")
     main_frame = Frame(window)
     main_frame.pack(padx=20, pady=20)
     fill_main_frame(main_frame)
@@ -49,13 +49,14 @@ def create_sql_query(window):
     sql_frame = LabelFrame(window, text='Чистый SQL запрос')
     sql_frame.pack(fill='both')
 
-    sql_label = Label(sql_frame, text='Напишите произвольный SQL запрос: ')
+    sql_label = Label(sql_frame, text='Название таблицы, которую вы хотите увидеть: ')
     sql_label.grid(column=0,row=0,padx=20, pady=20)
 
     sql_query = Entry(sql_frame)
     sql_query.grid(column=1,row=0)
 
-    button = Button(sql_frame, text='Выполнить запрос', command= lambda : get_answer_to_quary(window, u.quary_enum['raw'], [sql_query.get()]) )
+    button = Button(sql_frame, text='Выполнить запрос', command= lambda : u.verify_table_name(sql_query.get().lower(),
+    lambda : get_answer_to_quary(window, u.quary_enum['raw'], [sql_query.get().lower()])))
     button.grid(column=2,row=0, padx=20)
 
 def all_contr_by_clients_query(window, client_name_dict):

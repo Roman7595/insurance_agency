@@ -5,7 +5,7 @@ def clear_window(window):
     for i in window.winfo_children():
         i.destroy()
 
-quary_enum = {'raw': (0,lambda x: Services.raw_sql(x)),
+quary_enum = {'raw': (0,lambda x: Services.select_all(x)),
               'contr_by_client': (1,lambda x: Services.get_contracts_by_client(x)),
               'auto_by_client': (2, lambda x: Services.get_autos_by_client(x)),
               'contr_by_fed': (3, lambda x: Services.get_contracts_by_federal_region(x)),
@@ -18,6 +18,8 @@ quary_enum = {'raw': (0,lambda x: Services.raw_sql(x)),
               'count_contract_payment': 10,
               'multi_reasons': 11,
               }
+
+tables_names = ["autos","auto_types","clients","contracts","federal_regions","payments","reasons","regions"]
 
 def verify_positive(nums, next):
     for i in nums:
@@ -53,5 +55,8 @@ def null_check(data, next):
             return
     next()
 
-
-list_of_autos = {'':0,'Роман':1, 'vddfsdfd':3, 'sdgsdfbdfd':5, 'dвтмыл':1000}  #TODO: get all numbers and convert to id
+def verify_table_name(name, next):
+    if not(name in tables_names):
+        messagebox.showerror('Error', 'Не правильно указано название таблицы')
+        return
+    next()

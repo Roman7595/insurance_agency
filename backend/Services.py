@@ -64,3 +64,19 @@ def get_reasons_by_contract(contract_id):
 def update_reason_of_payment(data):#return to repo input:id,id output: New_name
     (payment_id, new_reason_id) = data
     return R.update_reason_of_payment(payment_id, new_reason_id)
+
+
+def select_all(data):
+    (table_name) = data[0]
+    (columns, values) = R.select_all(table_name)
+
+    parsed_columns=[]
+
+    for i in columns:
+        parsed_columns.append(i[0])
+
+    parsed_values = []
+    for i in values:
+        parsed_values.append(i)
+
+    return (parsed_columns, parsed_values)

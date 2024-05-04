@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import text
 
 from backend import connection
 from backend import Models
@@ -82,3 +83,11 @@ def update_reason_of_payment(payment_id, new_reason_id):
     return (payment.id, new_reason_name)
 def add_contract(auto_id, region_id, start_date, epiration_date, insurance_premium, liability_limit):
     pass
+
+def select_all(table_name):
+    c = s.execute(text(f"select column_name from information_schema.columns where table_name = '{table_name}'"))
+    v = s.execute(text(f'select * from "{table_name}"'))
+    return (c,v)
+
+
+

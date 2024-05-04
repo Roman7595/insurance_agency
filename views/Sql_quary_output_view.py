@@ -12,7 +12,7 @@ def back_to_main_menu(window):
 def main(window, type, sql_query_info):
     output = type[1](sql_query_info)
     if type[0] == 0:
-        label = Label(window, text= f'Результаты по запросу "{sql_query_info[0]}":')
+        label = Label(window, text= f'Результаты по запросу "select * from {sql_query_info[0]}":')
     else:
         label = Label(window, text=f'Результаты по запросу №{type[0]}:')
 
@@ -38,14 +38,17 @@ def main(window, type, sql_query_info):
             table['columns'] = columns
             table['show'] = 'headings'
             for i in table['columns']:
-                table.column(i, width=(550//len(table['columns'])), anchor='c')
+                table.column(i, width=(680//len(table['columns'])), anchor='c')
                 table.heading(i, text=i)
 
             for i in values:
                 table.insert('', 'end', values=list(i))
             return
-        except TypeError:
+        except Exception:
             messagebox.showerror('Error', 'По данному запросу ничего не найдено')
+            return
+        except sqlalchemy.exc.ProgrammingError:
+            messagebox.showerror('Error', 'Не правильно указано название таблицы')
             return
     elif type[0]==6:
         (number,new_name) = type[1](sql_query_info)
