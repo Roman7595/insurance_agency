@@ -56,7 +56,7 @@ def get_contracts_by_federal_region(federal_region_id):
     return s.query(Models.Contracts).join(Models.Regions).filter(Models.Regions.federal_region_id == int(federal_region_id))
 
 def get_contracts_by_time(start, end):
-    return  s.query(Models.Contracts).filter(Models.Contracts.start_date < end).filter(Models.Contracts.expiration_date > start).order_by(Models.Contracts.id)
+    return  s.query(Models.Contracts).filter(Models.Contracts.start_date < end).filter(Models.Contracts.expiration_date > start).order_by(Models.Contracts.start_date)
 
 def get_reasons_columns():
     return Models.Reasons.__table__.columns.keys()
@@ -72,17 +72,23 @@ def get_payment_by_id(payment_id):
 
 def update_reason_of_payment(payment_id, new_reason_id):
     payment = get_payment_by_id(payment_id)
-    # old_reason_id = payment.reason_id
+    old_reason_id = payment.reason_id
 
     reasons_dict = get_all_reasons()
     new_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(new_reason_id))]
-    # old_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(old_reason_id))]
-    # print(old_reason_id, old_reason_name, new_reason_name)
+    old_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(old_reason_id))]
+    print('-'*50+'\n',old_reason_id, old_reason_name, new_reason_name)
     payment.reason_id = new_reason_id
     s.commit()
-    return (payment.id, new_reason_name)
-def add_contract(auto_id, region_id, start_date, epiration_date, insurance_premium, liability_limit):
-    pass
+    return (payment.id, old_reason_name, new_reason_name)
+def add_contract(auto_id, region_id, start_date, expiration_date, insurance_premium, liability_limit):
+    try:
+        new_contract = Models.Contracts(auto_id, region_id, start_date, expiration_date, insurance_premium, liability_limit)
+        s.add(new_contract)
+        s.commit()
+        return new_contract.id
+    except:
+        s.close()
 
 def select_all(table_name):
     c = s.execute(text(f"select column_name from information_schema.columns where table_name = '{table_name}'"))

@@ -47,15 +47,14 @@ def main(window, type, sql_query_info):
         except Exception:
             messagebox.showerror('Error', 'По данному запросу ничего не найдено')
             return
-        except sqlalchemy.exc.ProgrammingError:
-            messagebox.showerror('Error', 'Не правильно указано название таблицы')
-            return
+
     elif type[0]==6:
-        (number,new_name) = type[1](sql_query_info)
-        out = Label(window, text=f'В выплате №{number} причина выплаты изменена на причину: "{new_name}"')
+        (number, old_name, new_name) = output
+        out = Label(window, text=f'В выплате №{number} причина выплаты изменена c "{old_name}" на "{new_name}"')
         out.pack(side='left', fill='both')
     elif type[0]==7:
-        out = Label(window, text='Договор успешно добавлен под номером: {number}')
+        number = output
+        out = Label(window, text=f'Договор успешно добавлен под номером: {number}')
         out.pack(side='left', fill='both')
     elif type[0]==8:
         out = Label(window, text='Договор №{number} успешно удален')
