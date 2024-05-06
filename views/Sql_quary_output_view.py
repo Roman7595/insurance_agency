@@ -48,16 +48,17 @@ def main(window, type, sql_query_info):
             messagebox.showerror('Error', 'По данному запросу ничего не найдено')
             return
 
-    elif type[0]==6:
-        (number, old_name, new_name) = output
-        out = Label(window, text=f'В выплате №{number} причина выплаты изменена c "{old_name}" на "{new_name}"')
+    elif type[0] == 6:
+        (payment_id, old_reason_name, new_reason_name) = output
+        out = Label(window, text=f'В выплате №{payment_id} причина выплаты изменена c "{old_reason_name}" на "{new_reason_name}"')
         out.pack(side='left', fill='both')
-    elif type[0]==7:
-        number = output
-        out = Label(window, text=f'Договор успешно добавлен под номером: {number}')
+    elif type[0] == 7:
+        contract_id = output
+        out = Label(window, text=f'Договор успешно добавлен под номером: {contract_id}')
         out.pack(side='left', fill='both')
-    elif type[0]==8:
-        out = Label(window, text='Договор №{number} успешно удален')
+    elif type[0] == 8:
+        contract_id = output
+        out = Label(window, text=f'Договор №{contract_id} успешно удален')
         out.pack(side='left', fill='both')
 
     button = Button(window, text='Назад', command=lambda: back_to_main_menu(window))

@@ -13,8 +13,8 @@ def back(window):
     s.fill_second_frame(window)
 
 def fill_third_frame(window):
-    payment_dict = Repositories.get_all_payments()
-    all_contracts_where_reason_quary(window, payment_dict)
+    reason_dict = Repositories.get_all_reasons()
+    all_contracts_where_reason_quary(window, reason_dict)
 
     button_frame = Frame(window)
     button_frame.pack(fill='both', pady=20)
@@ -23,11 +23,11 @@ def fill_third_frame(window):
     button.pack(anchor='sw', padx=20)
 
 
-def all_contracts_where_reason_quary(window, payment_dict):
-    sql_frame = LabelFrame(window, text='Договоры, по которым были сделаны данные выплаты')
+def all_contracts_where_reason_quary(window, reason_dict):
+    sql_frame = LabelFrame(window, text='Посчитать договоры, по которым были выплаты по введенным причинам относительно типов автомобилей')
     sql_frame.pack(fill='both')
 
-    sql_label = Label(sql_frame, text='Выберете количество выплат: ')
+    sql_label = Label(sql_frame, text='Выберете количество причин выплат: ')
     sql_label.grid(padx=20, pady=20)
 
     count_reasons = Entry(sql_frame)
@@ -37,19 +37,19 @@ def all_contracts_where_reason_quary(window, payment_dict):
     reason_frame.grid(column=0, row=1, columnspan=2)
 
     button = Button(sql_frame, text='Ввести',
-                    command=lambda: place_reasons(int(count_reasons.get()), reason_frame, payment_dict))
+                    command=lambda: place_reasons(int(count_reasons.get()), reason_frame, reason_dict))
     button.grid(column=2, row=0, padx=20, pady=20)
 
 
     button = Button(sql_frame, text='Выполнить',
-                    command= lambda: M.get_answer_to_quary(window, u.quary_enum['multi_reasons'],
-                                                  [payment_dict[int(i.get())] for i in REASONS]))
+                    command=lambda: M.get_answer_to_quary(window, u.quary_enum['multi_reasons'],
+                                                  [reason_dict[i.get()] for i in REASONS]))
     button.grid(column=2, row=2, padx=20, pady=20)
 
 
-def place_reasons(n, window, payment_dict):
+def place_reasons(n, window, reason_dict):
     u.clear_window(window)
-    reason_count = len(payment_dict)
+    reason_count = len(reason_dict)
 
     if n<=0 or n>reason_count:
         messagebox.showerror('Error', f'Количество причин должно быть натуральным числом не более чем {reason_count}')
@@ -62,5 +62,5 @@ def place_reasons(n, window, payment_dict):
 
         REASONS.append(ttk.Combobox(window, state="readonly"))
 
-        REASONS[-1]['values'] = list(payment_dict.keys())
+        REASONS[-1]['values'] = list(reason_dict.keys())
         REASONS[-1].grid(column=1, row=i)

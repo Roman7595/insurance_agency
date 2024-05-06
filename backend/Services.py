@@ -84,5 +84,8 @@ def select_all(data):
 def add_cotract(data):
     (auto_id, region_id, start_date, expiration_date, insurance_premium, liability_limit) = data
     result = R.add_contract(auto_id, region_id, start_date, expiration_date, insurance_premium, liability_limit)
-    print(result)
     return result
+
+def delete_contract(data):
+    (contract_id) = data[0]
+    return R.delete_contract(contract_id)

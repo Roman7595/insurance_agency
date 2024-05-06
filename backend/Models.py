@@ -9,7 +9,6 @@ engine = create_engine(connection.conn, echo=True)
 
 Base = declarative_base()
 
-
 class Federal_regions(Base):
     __tablename__ = 'federal_regions'
     id = Column(Integer, primary_key=True)
@@ -18,7 +17,6 @@ class Federal_regions(Base):
 
     def __iter__(self):
         return [self.id, self.name].__iter__()
-
 
 class Regions(Base):
     __tablename__ = 'regions'
@@ -34,7 +32,6 @@ class Regions(Base):
     def __iter__(self):
         return [self.id, self.federal_region_id, self.name, self.risk_factor, self.OKATO_region_code].__iter__()
 
-
 class Auto_types(Base):
     __tablename__ = 'auto_types'
 
@@ -45,7 +42,6 @@ class Auto_types(Base):
 
     def __iter__(self):
         return [self.id, self.name, self.risk_factor, self.auto].__iter__()
-
 
 class Clients(Base):
     __tablename__ = 'clients'
@@ -64,7 +60,6 @@ class Clients(Base):
         return [self.id, self.name, self.surname, self.last_name, self.passport_number, self.phone_number,
                 self.email, self.passport_series].__iter__()
 
-
 class Autos(Base):
     __tablename__ = 'autos'
 
@@ -82,7 +77,6 @@ class Autos(Base):
     def __iter__(self):
         return [self.id, self.auto_type_id, self.client_id, self.number, self.brand, self.model,
                 self.VIN].__iter__()
-
 
 class Contracts(Base):
     __tablename__ = 'contracts'
@@ -136,6 +130,5 @@ class Payments(Base):
 
     def __iter__(self):
         return [self.id, self.reason_id, self.contract_id, self.date, self.payment_sum, self.reason_id].__iter__()
-
 
 Base.metadata.create_all(engine)

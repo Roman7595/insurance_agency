@@ -62,7 +62,7 @@ def get_reasons_columns():
     return Models.Reasons.__table__.columns.keys()
 
 def get_reasons_by_contract(contract_id):
-    return s.query(Models.Reasons.id,Models.Reasons.name,Models.Reasons.risk_factor).join(Models.Payments).join(Models.Contracts).filter(Models.Contracts.id == int(contract_id))
+    return s.query(Models.Reasons.id, Models.Reasons.name, Models.Reasons.risk_factor).join(Models.Payments).join(Models.Contracts).filter(Models.Contracts.id == int(contract_id))
 
 def count_contracts_by_client():
     return s.query(Models)
@@ -73,7 +73,6 @@ def get_payment_by_id(payment_id):
 def update_reason_of_payment(payment_id, new_reason_id):
     payment = get_payment_by_id(payment_id)
     old_reason_id = payment.reason_id
-
     reasons_dict = get_all_reasons()
     new_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(new_reason_id))]
     old_reason_name = list(reasons_dict.keys())[list(reasons_dict.values()).index(int(old_reason_id))]
@@ -91,9 +90,13 @@ def add_contract(auto_id, region_id, start_date, expiration_date, insurance_prem
         s.close()
 
 def select_all(table_name):
-    c = s.execute(text(f"select column_name from information_schema.columns where table_name = '{table_name}'"))
-    v = s.execute(text(f'select * from "{table_name}"'))
-    return (c,v)
+    columns = s.execute(text(f"select column_name from information_schema.columns where table_name = '{table_name}'"))
+    values = s.execute(text(f'select * from "{table_name}"'))
+    return (columns,values)
 
-
+def delete_contract(contract_id):
+    s.query(Models.Payments).filter(Models.Payments.contract_id == contract_id).delete()
+    s.query(Models.Contracts).filter(Models.Contracts.id == contract_id).delete()
+    s.commit()
+    return contract_id
 

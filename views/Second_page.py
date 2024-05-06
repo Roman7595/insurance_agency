@@ -20,8 +20,8 @@ def fill_second_frame(window):
     add_contract_query(window,auto_dict,region_dict)
     contract_dict = Repositories.get_all_contract()
     delete_contract_query(window, contract_dict)
-    count_contract_by_users_quary(window)
-    count_contract_where_payments_quary(window)
+    # count_contract_by_users_quary(window)
+    # count_contract_where_payments_quary(window)
 
 
 
@@ -126,21 +126,21 @@ def delete_contract_query(window, contract_dict):
                     command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['delete_contract'], [contract_dict[int(contract_number.get())]]))
     button.grid(column=2, row=0, padx=20)
 
-def count_contract_by_users_quary(window):
-    sql_frame = LabelFrame(window, text='Количество договоров на человека ')
-    sql_frame.pack(fill = 'both')
-
-    button = Button(sql_frame, text='Выполнить',
-                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract_user'],
-                                                                  []))
-    button.grid(column=2, row=0, padx=20, pady=10)
-
-def count_contract_where_payments_quary(window):
-    sql_frame = LabelFrame(window, text='Договоры где есть выплата')
-    sql_frame.pack(fill = 'both')
-
-    button = Button(sql_frame, text='Выполнить',
-                    command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract_payment'],
-                                                                  []))
-    button.grid(column=2, row=0, padx=20, pady=10)
-
+# def count_contract_by_users_quary(window):
+#     sql_frame = LabelFrame(window, text='Количество договоров на человека ')
+#     sql_frame.pack(fill = 'both')
+#
+#     button = Button(sql_frame, text='Выполнить',
+#                     command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract_user'],
+#                                                                   []))
+#     button.grid(column=2, row=0, padx=20, pady=10)
+#
+# def count_contract_where_payments_quary(window):
+#     sql_frame = LabelFrame(window, text='Договоры где есть выплата')
+#     sql_frame.pack(fill = 'both')
+#
+#     button = Button(sql_frame, text='Выполнить',
+#                     command=lambda: Main_view.get_answer_to_quary(window, u.quary_enum['count_contract_payment'],
+#                                                                   []))
+#     button.grid(column=2, row=0, padx=20, pady=10)
+#
