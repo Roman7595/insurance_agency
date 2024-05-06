@@ -14,7 +14,7 @@ quary_enum = {'raw': (0,lambda x: Services.select_all(x)),
               'update_reason': (6, lambda x: Services.update_reason_of_payment(x)),
               'add_contract': (7, lambda x: Services.add_cotract(x)),
               'delete_contract': (8, lambda x: Services.delete_contract(x)),
-              'multi_reasons': 9,
+              'multi_reasons': (9,lambda  x: Services.multi_reasons(x))
               }
 
 tables_names = ["autos","auto_types","clients","contracts","federal_regions","payments","reasons","regions"]

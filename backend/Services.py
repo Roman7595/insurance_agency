@@ -89,3 +89,6 @@ def add_cotract(data):
 def delete_contract(data):
     (contract_id) = data[0]
     return R.delete_contract(contract_id)
+
+def multi_reasons(data):
+    return R.multi_reasons(data)

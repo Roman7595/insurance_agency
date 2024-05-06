@@ -90,8 +90,8 @@ def add_contract(auto_id, region_id, start_date, expiration_date, insurance_prem
         s.close()
 
 def select_all(table_name):
-    columns = s.execute(text(f"select column_name from information_schema.columns where table_name = '{table_name}'"))
-    values = s.execute(text(f'select * from "{table_name}"'))
+    columns = s.execute(text("select column_name from information_schema.columns where table_name = :table_name"), {"table_name": table_name})
+    values = s.execute(text("select * from :table_name"), {"table_name": table_name})
     return (columns,values)
 
 def delete_contract(contract_id):
@@ -100,3 +100,27 @@ def delete_contract(contract_id):
     s.commit()
     return contract_id
 
+def multi_reasons(reasons):
+    columns = ["AUTO_TYPES.NAME", "COUNT(CONTRACTS.ID)"]
+
+    args =""
+    args_values = dict()
+    for i in range(len(reasons)):
+        args += f":reasons_id{i}, "
+        args_values.update({f"reasons_id{i}": reasons[i]})
+
+    sql_text = text(f"SELECT AUTO_TYPES.NAME, "
+                    +   "COUNT(CONTRACTS.ID) "
+                    +"FROM AUTO_TYPES "
+                    +"JOIN AUTOS ON AUTOS.AUTO_TYPE_ID = AUTO_TYPES.ID "
+                    +"JOIN CONTRACTS ON CONTRACTS.AUTO_ID = AUTOS.ID "
+                    +"WHERE EXISTS "
+                    +    "(SELECT * "
+                    +        "FROM PAYMENTS "
+                    +        "JOIN REASONS ON PAYMENTS.REASON_ID = REASONS.ID "
+                    +        f"WHERE REASONS.ID IN ({args[:-2]}) "
+                    +        "AND PAYMENTS.CONTRACT_ID = CONTRACTS.ID) "
+                    +"GROUP BY AUTO_TYPES.NAME;")
+
+    values = s.execute(sql_text, args_values)
+    return (columns, values)
