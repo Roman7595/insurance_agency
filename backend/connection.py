@@ -1,0 +1,1 @@
+conn = 'postgresql+psycopg2://postgres:1111@localhost/insurance_agency'
